@@ -1,6 +1,6 @@
 plugins {
     java
-    // `maven-publish`
+    id("maven-publish")
 }
 
 group = "us.ajg0702.leaderboards.nms-19"
