@@ -1,5 +1,6 @@
 package us.ajg0702.leaderboards.commands.main.subcommands;
 
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import us.ajg0702.commands.CommandSender;
@@ -37,7 +38,7 @@ public class UpdatePlayer extends SubCommand {
             sender.sendMessage(message("&cPlease provide a board and player to update\n&7Usage: /"+label+" update <board> <player>"));
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        SchedulerUtil.runTaskAsynchronously(plugin, () -> {
             String board = args[0];
             if(!plugin.getCache().boardExists(board) && !board.equals("*")) {
                 sender.sendMessage(message("&cThe board '"+board+"' does not exist."));

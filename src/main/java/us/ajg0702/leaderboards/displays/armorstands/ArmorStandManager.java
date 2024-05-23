@@ -1,5 +1,6 @@
 package us.ajg0702.leaderboards.displays.armorstands;
 
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -176,8 +177,9 @@ public class ArmorStandManager {
         if(world == null) {
             throw new IllegalArgumentException("Invalid world");
         }
-        Bukkit.getScheduler().runTask(
+        SchedulerUtil.runTask(
                 plugin,
+                loc,
                 () -> future.complete(world.getNearbyEntities(loc, 1, 1, 1))
         );
         return future;

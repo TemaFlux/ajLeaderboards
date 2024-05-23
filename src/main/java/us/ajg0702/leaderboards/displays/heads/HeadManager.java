@@ -13,6 +13,7 @@ import org.bukkit.block.data.type.WallSign;
 import us.ajg0702.leaderboards.Debug;
 import us.ajg0702.leaderboards.LeaderboardPlugin;
 import us.ajg0702.leaderboards.displays.signs.BoardSign;
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import us.ajg0702.utils.spigot.VersionSupport;
 
 import java.util.HashMap;
@@ -140,7 +141,7 @@ public class HeadManager {
 
         OfflinePlayer op = VersionSupport.getMinorVersion() > 9 ? Bukkit.getOfflinePlayer(id) : null;
 
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        SchedulerUtil.runTask(plugin, loc, () -> {
             if(plugin.getHeadUtils().getVersionedHeadUtils() != null) {
                 plugin.getHeadUtils().getVersionedHeadUtils().setHeadBlock(loc.getBlock(), id, name);
             } else {

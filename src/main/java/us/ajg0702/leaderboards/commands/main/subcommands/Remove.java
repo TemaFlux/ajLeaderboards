@@ -1,16 +1,17 @@
 package us.ajg0702.leaderboards.commands.main.subcommands;
 
-import org.bukkit.Bukkit;
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
+import org.bukkit.entity.Entity;
 import us.ajg0702.commands.CommandSender;
 import us.ajg0702.commands.SubCommand;
 import us.ajg0702.leaderboards.Debug;
 import us.ajg0702.leaderboards.LeaderboardPlugin;
 
-import static us.ajg0702.leaderboards.LeaderboardPlugin.message;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import static us.ajg0702.leaderboards.LeaderboardPlugin.message;
 
 public class Remove extends SubCommand {
     private final LeaderboardPlugin plugin;
@@ -50,7 +51,7 @@ public class Remove extends SubCommand {
                     "</b></green></click>"));
             confirmDeletes.put(sender.getHandle(), board);
             Debug.info("Added confirmDelete: "+confirmDeletes.keySet().size());
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            SchedulerUtil.runTaskLater(plugin, sender instanceof Entity ? sender : null, () -> {
                 Debug.info("Removing confirmDelete");
                 if(confirmDeletes.containsKey(sender.getHandle()) && confirmDeletes.get(sender.getHandle()).equals(board)) {
                     confirmDeletes.remove(sender.getHandle());

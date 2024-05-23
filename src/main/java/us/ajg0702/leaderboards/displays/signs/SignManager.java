@@ -1,8 +1,8 @@
 package us.ajg0702.leaderboards.displays.signs;
 
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.ajg0702.leaderboards.LeaderboardPlugin;
@@ -33,7 +33,7 @@ public class SignManager {
     public SignManager(LeaderboardPlugin plugin) {
         this.plugin = plugin;
 
-        Bukkit.getScheduler().runTask(plugin, this::reload);
+        SchedulerUtil.runTask(plugin, null, this::reload);
 
 
     }
@@ -42,7 +42,7 @@ public class SignManager {
         return signs;
     }
 
-    int updateIntervalId = -1;
+    SchedulerUtil.Task updateInterval;
 
     public void reload() {
         cfgFile = new File(plugin.getDataFolder(), "displays.yml");
@@ -68,15 +68,15 @@ public class SignManager {
         }
         updateNameCache();
 
-        if(updateIntervalId != -1) {
+        if(updateInterval != null) {
             try {
-                Bukkit.getScheduler().cancelTask(updateIntervalId);
-                updateIntervalId = -1;
+                updateInterval.cancel();
+                updateInterval = null;
             } catch(IllegalStateException e) {
-                updateIntervalId = -1;
+                updateInterval = null;
             }
         }
-        updateIntervalId = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::updateSigns, 10*20, plugin.getAConfig().getInt("sign-update")).getTaskId();
+        updateInterval = SchedulerUtil.runTaskTimerAsynchronously(plugin, this::updateSigns, 10*20, plugin.getAConfig().getInt("sign-update"));
     }
 
     /**
@@ -103,7 +103,7 @@ public class SignManager {
                 signs.remove(s);
                 save = true;
                 s.setRemoved(true);
-                if(removeText) Bukkit.getScheduler().runTask(plugin, () -> s.setText("", "", "", ""));
+                if(removeText) SchedulerUtil.runTask(plugin, l, () -> s.setText("", "", "", ""));
                 break;
             }
         }
@@ -213,7 +213,7 @@ public class SignManager {
             plugin.getArmorStandManager().search(sign, r.getPlayerName(), r.getPlayerID());
         }
         if(plugin.isShuttingDown()) return;
-        Bukkit.getScheduler().runTask(plugin, () -> sign.setText(pLines.get(0), pLines.get(1), pLines.get(2), pLines.get(3)));
+        SchedulerUtil.runTask(plugin, sign.getLocation(), () -> sign.setText(pLines.get(0), pLines.get(1), pLines.get(2), pLines.get(3)));
     }
 
     public boolean isSignChunkLoaded(BoardSign sign) {

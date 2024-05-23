@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import org.bukkit.Bukkit;
 import us.ajg0702.commands.CommandSender;
 import us.ajg0702.commands.SubCommand;
@@ -42,7 +43,7 @@ public class Import extends SubCommand {
             sender.sendMessage(message("&cPlease provide a file name.\n&7Usage: /"+label+" import <file>"));
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        SchedulerUtil.runTaskAsynchronously(plugin, () -> {
             File file = new File(plugin.getDataFolder(), args[0]);
             if(!file.exists()) {
                 sender.sendMessage(plugin.getMessages().getComponent("commands.import.nofile", "FILE:"+file.getName()));

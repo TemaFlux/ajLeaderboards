@@ -1,5 +1,6 @@
 package us.ajg0702.leaderboards.displays.signs;
 
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -47,7 +48,7 @@ public class BoardSign {
 
     private Future<Sign> setSign() {
         CompletableFuture<Sign> future = new CompletableFuture<>();
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        SchedulerUtil.runTask(plugin, location, () -> {
             BlockState state = location.getBlock().getState();
             if(!(state instanceof Sign)) {
                 sign = null;
@@ -112,7 +113,7 @@ public class BoardSign {
             future.completeExceptionally(new InterruptedException());
             return future;
         }
-        Bukkit.getScheduler().runTask(plugin, () -> future.complete(location.getBlock().getType().toString()));
+        SchedulerUtil.runTask(plugin, location, () -> future.complete(location.getBlock().getType().toString()));
         return future;
     }
 

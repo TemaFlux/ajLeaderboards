@@ -1,5 +1,6 @@
 package us.ajg0702.leaderboards.commands.main.subcommands;
 
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import org.bukkit.Bukkit;
 import us.ajg0702.commands.CommandSender;
 import us.ajg0702.commands.SubCommand;
@@ -54,7 +55,7 @@ public class RemovePlayer extends SubCommand {
             boards = plugin.getCache().getBoards();
         }
         List<String> finalBoards = boards;
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        SchedulerUtil.runTaskAsynchronously(plugin, () -> {
             for(String b : finalBoards) {
                 if(plugin.getCache().removePlayer(b, playername)) {
                     sender.sendMessage(message("&aRemoved "+playername+" from "+b+"!"));

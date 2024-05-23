@@ -2,6 +2,7 @@ package us.ajg0702.leaderboards.commands.main.subcommands;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import us.ajg0702.commands.CommandSender;
@@ -35,7 +36,7 @@ public class Viewer extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args, String label) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        SchedulerUtil.runTaskAsynchronously(plugin, () -> {
             JsonObject obj = plugin.getExporter().export(sender);
             if(obj == null) {
                 sender.sendMessage(plugin.getMessages().getComponent("commands.export.fail"));

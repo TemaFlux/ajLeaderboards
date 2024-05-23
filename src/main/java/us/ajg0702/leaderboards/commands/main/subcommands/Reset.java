@@ -1,6 +1,7 @@
 package us.ajg0702.leaderboards.commands.main.subcommands;
 
-import org.bukkit.Bukkit;
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
+import org.bukkit.entity.Entity;
 import us.ajg0702.commands.CommandSender;
 import us.ajg0702.commands.SubCommand;
 import us.ajg0702.leaderboards.Debug;
@@ -53,7 +54,7 @@ public class Reset extends SubCommand {
                     "</b></green></click>"));
             confirmResets.put(sender.getHandle(), board);
             Debug.info("Added confirmDelete: "+ confirmResets.keySet().size());
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            SchedulerUtil.runTaskLater(plugin, sender instanceof Entity ? sender : null, () -> {
                 if(confirmResets.containsKey(sender.getHandle()) && confirmResets.get(sender.getHandle()).equals(board)) {
                     confirmResets.remove(sender.getHandle());
                 }

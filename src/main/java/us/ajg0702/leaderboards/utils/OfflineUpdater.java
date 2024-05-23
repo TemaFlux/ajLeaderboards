@@ -1,5 +1,6 @@
 package us.ajg0702.leaderboards.utils;
 
+import us.ajg0702.leaderboards.utils.SchedulerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import us.ajg0702.commands.CommandSender;
@@ -25,7 +26,7 @@ public class OfflineUpdater {
         offlinePlayerQueue.addAll(Arrays.asList(players));
         started = offlinePlayerQueue.size();
 
-        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        SchedulerUtil.runTaskAsynchronously(this.plugin, () -> {
             startedTime = System.currentTimeMillis();
             while(!offlinePlayerQueue.isEmpty() && !plugin.isShuttingDown()) {
                 OfflinePlayer player = offlinePlayerQueue.pop();
