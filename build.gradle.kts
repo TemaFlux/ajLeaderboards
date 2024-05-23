@@ -1,6 +1,6 @@
 plugins {
     java
-    `maven-publish`
+    // `maven-publish`
     id("com.github.johnrengelman.shadow").version("6.1.0")
     id("io.github.slimjar").version("1.3.0")
 }
@@ -98,7 +98,7 @@ tasks.shadowJar {
     }
 }
 
-publishing {
+/* publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             artifact(tasks["jar"])
@@ -121,8 +121,7 @@ publishing {
             }
         }
     }
-}
-
+} */
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8

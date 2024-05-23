@@ -1,6 +1,6 @@
 plugins {
     java
-    `maven-publish`
+    // `maven-publish`
 }
 
 group = "us.ajg0702.leaderboards.nms-19"
@@ -25,7 +25,7 @@ dependencies {
     compileOnly("net.skinsrestorer:skinsrestorer-api:14.1.10")
 }
 
-publishing {
+/* publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             artifact(tasks["jar"])
@@ -48,7 +48,7 @@ publishing {
             }
         }
     }
-}
+} */
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
