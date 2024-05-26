@@ -78,10 +78,10 @@ public class SchedulerUtil {
         if (isFolia()) {
             handleTask = Bukkit.getAsyncScheduler().runNow(plugin, ignored -> action.run());
         } else {
-            handleTask = SchedulerUtil.runTaskAsynchronously(plugin, action);
+            handleTask = Bukkit.getScheduler().runTaskAsynchronously(plugin, action);
         }
 
-        Task task = handleTask == null ? null : new Task(handleTask);
+        Task task = new Task(handleTask);
         addTask(task);
         return task;
     }
@@ -97,10 +97,10 @@ public class SchedulerUtil {
 
             handleTask = Bukkit.getAsyncScheduler().runAtFixedRate(plugin, ignored -> action.run(), initialDelayTicks, periodTicks, TimeUnit.MILLISECONDS);
         } else {
-            handleTask = SchedulerUtil.runTaskTimerAsynchronously(plugin, action, initialDelayTicks, periodTicks);
+            handleTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, action, initialDelayTicks, periodTicks);
         }
 
-        Task task = handleTask == null ? null : new Task(handleTask);
+        Task task = new Task(handleTask);
         addTask(task);
         return task;
     }
@@ -124,14 +124,16 @@ public class SchedulerUtil {
     public static void cancelTasks(Plugin plugin) {
         if (plugin == null) return;
 
+
+
         if (isFolia()) {
             try {
-                Bukkit.getAsyncScheduler().cancelTasks(plugin);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
+                try {
+                    Bukkit.getAsyncScheduler().cancelTasks(plugin);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
 
-            try {
                 if (tasks == null || tasks.isEmpty()) return;
 
                 tasks.removeIf(task -> {
@@ -146,7 +148,7 @@ public class SchedulerUtil {
                 e.printStackTrace();
             }
         } else {
-            SchedulerUtil.cancelTasks(plugin);
+            Bukkit.getScheduler().cancelTasks(plugin);
         }
     }
 
@@ -179,7 +181,7 @@ public class SchedulerUtil {
         public void cancel() {
             if (handle == null) return;
 
-            if (handle instanceof ScheduledTask) {
+            if (isFolia() && handle instanceof ScheduledTask) {
                 ((ScheduledTask) handle).cancel();
             } else if (handle instanceof BukkitTask) {
                 ((BukkitTask) handle).cancel();
@@ -191,7 +193,7 @@ public class SchedulerUtil {
         public boolean isCancelled() {
             if (handle == null) return false;
 
-            if (handle instanceof ScheduledTask) {
+            if (isFolia() && handle instanceof ScheduledTask) {
                 return ((ScheduledTask) handle).isCancelled();
             } else if (handle instanceof BukkitTask) {
                 return ((BukkitTask) handle).isCancelled();
@@ -205,7 +207,7 @@ public class SchedulerUtil {
         public Plugin getOwner() {
             if (handle == null) return null;
 
-            if (handle instanceof ScheduledTask) {
+            if (isFolia() && handle instanceof ScheduledTask) {
                 return ((ScheduledTask) handle).getOwningPlugin();
             } else if (handle instanceof BukkitTask) {
                 return ((BukkitTask) handle).getOwner();
